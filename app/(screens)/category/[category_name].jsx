@@ -1,8 +1,6 @@
-import { themeColors } from "@/constants/Colors";
-import { useNavigation } from "@react-navigation/native";
-import React, { useState } from "react";
+import { Link, useLocalSearchParams } from "expo-router";
+import React, { useEffect, useState } from "react";
 import {
-  Image,
   SafeAreaView,
   ScrollView,
   StatusBar,
@@ -11,22 +9,36 @@ import {
   TouchableWithoutFeedback,
   View,
 } from "react-native";
-import * as Icon from "react-native-feather";
-import PageHeader from "../../components/PageHeader";
 import { dishes } from "@/constants/mock/dishes-data";
-import { Link } from "expo-router";
+import { themeColors } from "@/constants/Colors";
+import * as Icon from "react-native-feather";
+import PageHeader from "../../../components/PageHeader";
+import { Image } from "expo-image";
 
-const AllDishesScreen = () => {
+const CategoryDishesScreen = () => {
   const [search, setSearch] = useState("");
-  const [filteredDishes, setFilteredDishes] = useState(dishes);
+
+  const { category_name } = useLocalSearchParams();
+  const [item, setItem] = useState(null);
+  const [filteredDishes, setFilteredDishes] = useState(null);
+  console.log(filteredDishes);
+
+  useEffect(() => {
+    if (dishes && category_name) {
+      const item = dishes.filter((dish) =>
+        dish.category.toLowerCase().includes(category_name.toLowerCase())
+      );
+      setFilteredDishes(item);
+    }
+  }, [dishes, category_name]);
 
   const handleSearch = (value) => {
     setSearch(value);
 
     if (!value) {
-      setFilteredDishes(dishes);
+      setFilteredDishes(item);
     } else {
-      const searchDishes = dishes.filter((dish) =>
+      const searchDishes = item.filter((dish) =>
         dish.name.toLowerCase().includes(value.toLowerCase())
       );
       setFilteredDishes(searchDishes);
@@ -35,7 +47,7 @@ const AllDishesScreen = () => {
 
   return (
     <SafeAreaView style={{ marginTop: StatusBar.currentHeight }}>
-      <PageHeader label="All Dishes" backOption={true} />
+      <PageHeader label="Dishes" backOption={true} />
 
       <View
         style={{
@@ -67,14 +79,34 @@ const AllDishesScreen = () => {
             />
           </View>
         </View>
+
+        <View
+          style={{
+            marginTop: 10,
+          }}
+        >
+          <Text
+            style={{
+              color: "white",
+              fontSize: 12,
+              backgroundColor: themeColors.bgColor(1),
+              paddingHorizontal: 12,
+              paddingVertical: 5,
+              borderRadius: 9999,
+              alignSelf: "flex-start",
+            }}
+          >
+            {category_name}
+          </Text>
+        </View>
       </View>
 
       <ScrollView
         showsVerticalScrollIndicator={false}
         style={{ paddingTop: 10, paddingHorizontal: 20, paddingBottom: 10 }}
       >
-        {filteredDishes.length > 0 ? (
-          filteredDishes.map((dish, idx) => {
+        {filteredDishes?.length > 0 ? (
+          filteredDishes?.map((dish, idx) => {
             const id = dish?._id;
             return (
               <Link key={idx} href={`/(screens)/dishes/${id}`} asChild>
@@ -93,7 +125,6 @@ const AllDishesScreen = () => {
                   <View
                     style={{
                       height: 60,
-                      width: 60,
                       aspectRatio: 1 / 1,
                       borderRadius: 10,
                       overflow: "hidden",
@@ -103,7 +134,7 @@ const AllDishesScreen = () => {
                       style={{
                         height: "100%",
                         width: "100%",
-                        objectFit: "cover",
+                        objectFit: "scale-down",
                       }}
                       source={{ uri: dish.image }}
                     />
@@ -163,4 +194,4 @@ const AllDishesScreen = () => {
   );
 };
 
-export default AllDishesScreen;
+export default CategoryDishesScreen;

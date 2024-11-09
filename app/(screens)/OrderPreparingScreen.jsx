@@ -1,4 +1,5 @@
 import { useNavigation } from "@react-navigation/native";
+import { useRouter } from "expo-router";
 import React, { useEffect } from "react";
 import {
   Image,
@@ -10,19 +11,19 @@ import {
 } from "react-native";
 
 const OrderPreparingScreen = () => {
-  const navigation = useNavigation();
+  const router = useRouter();
 
   useEffect(() => {
     setTimeout(() => {
-      navigation.navigate('Delivery')
-    },3000)
-  })
+      router.push("/(screens)/DeliveryScreen");
+    }, 3000);
+  });
   return (
     <SafeAreaView style={styles.AndroidSafeArea}>
       <View className="flex-1 bg-white justify-center items-center">
         <Image
           source={require("../../assets/images/Take Away.gif")}
-          className="h-80 w-80"
+          style={{ height: 320, width: 320 }}
         />
       </View>
     </SafeAreaView>

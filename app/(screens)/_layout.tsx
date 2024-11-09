@@ -6,7 +6,6 @@ const _layout = () => {
     <Stack>
       <Stack.Screen name="AllDishesScreen" options={{ headerShown: false }} />
       <Stack.Screen name="CartSummaryScreen" options={{ headerShown: false }} />
-      <Stack.Screen name="CategoryDishesScreen" options={{ headerShown: false }} />
       <Stack.Screen name="DeliveryScreen" options={{ headerShown: false }} />
       <Stack.Screen name="FavouritesScreen" options={{ headerShown: false }} />
       <Stack.Screen name="NotificationScreen" options={{ headerShown: false }} />
@@ -14,6 +13,8 @@ const _layout = () => {
       <Stack.Screen name="OrderScreen" options={{ headerShown: false }} />
       <Stack.Screen name="OtpValidationScreen" options={{ headerShown: false }} />
       <Stack.Screen name="dishes/[id]" options={{ headerShown: false }} />
+      <Stack.Screen name="category/[category_name]" options={{ headerShown: false }} />
+      <Stack.Screen name="MapViewScreen" options={{ headerShown: false }} />
     </Stack>
   );
 };

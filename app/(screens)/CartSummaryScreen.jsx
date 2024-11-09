@@ -2,6 +2,7 @@ import PageHeader from "@/components/PageHeader";
 import { themeColors } from "@/constants/Colors";
 import { useCart } from "@/hooks/useCart";
 import { useNavigation } from "@react-navigation/native";
+import { Link } from "expo-router";
 import React from "react";
 import {
   Image,
@@ -15,7 +16,6 @@ import {
 
 const CartSummaryScreen = () => {
   const { cartItems, cartTotal } = useCart();
-  const navigation = useNavigation();
 
   let delivery_charge = (0.05 * cartTotal).toFixed(2);
   let total_charge_after_delivery =
@@ -116,15 +116,16 @@ const CartSummaryScreen = () => {
         style={{ backgroundColor: themeColors.bgColor(0.2), paddingVertical:32, paddingHorizontal:10, borderTopLeftRadius:20, borderTopRightRadius:20 }}
         className="p-6 px-8 rounded-t-3xl space-y-4"
       >
-        <TouchableOpacity
-          onPress={() => navigation.navigate("OrderPreparing")}
-          style={{ backgroundColor: themeColors.bgColor(1) }}
-          className="p-3 rounded-full"
-        >
-          <Text className="text-white text-center font-bold text-lg">
-            Place Order
-          </Text>
-        </TouchableOpacity>
+        <Link href={"/(screens)/OrderPreparingScreen"} asChild>
+          <TouchableOpacity
+            style={{ backgroundColor: themeColors.bgColor(1) }}
+            className="p-3 rounded-full"
+          >
+            <Text className="text-white text-center font-bold text-lg">
+              Place Order
+            </Text>
+          </TouchableOpacity>
+        </Link>
       </View>
     </SafeAreaView>
   );

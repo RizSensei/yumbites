@@ -13,69 +13,83 @@ import {
 // import MapView, { Marker } from "react-native-maps";
 import * as Icon from "react-native-feather";
 import { themeColors } from "@/constants/Colors";
+import { Link } from "expo-router";
 
 export default function DeliveryScreen() {
   const navigation = useNavigation();
   return (
     <SafeAreaView style={styles.AndroidSafeArea}>
-      {/* <MapView
-        initialRegion={{
-          latitude: restaurant.latitude,
-          longitude: restaurant.longitude,
-          latitudeDelta: 0.0922,
-          longitudeDelta: 0.0421,
+      <View
+        style={{
+          borderTopLeftRadius: 24,
+          borderTopRightRadius: 24,
+          marginTop: -48,
+          backgroundColor: "white",
+          position: "relative",
         }}
-        className="flex-1"
-        mapType="standard"
       >
-        <Marker
-          coordinate={{
-            latitude: restaurant.latitude,
-            longitude: restaurant.longitude,
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "space-between",
+            paddingHorizontal: 20,
+            paddingTop: 40,
           }}
-          title={restaurant.name}
-          description={restaurant.description}
-          pinColor={themeColors.bgColor(1)}
-        />
-      </MapView> */}
-      <View className="rounded-t-3xl -mt-12 bg-white relative">
-        <View className="flex-row justify-between px-5 pt-10">
+        >
           <View>
-            <Text className="text-lg text-gray-700 font-semibold">
-              {" "}
-              Estimated Arrival{" "}
+            <Text style={{ fontSize: 18, color: "#4B5563", fontWeight: "600" }}>
+              Estimated Arrival
             </Text>
-            <Text className="text-3xl text-gray-700 font-extrabold">
-              {" "}
+            <Text style={{ fontSize: 30, color: "#4B5563", fontWeight: "800" }}>
               20-30 minutes
             </Text>
-            <Text className="mt-2 text-gray-700 font-semibold">
-              {" "}
+            <Text style={{ marginTop: 3, color: "#4B5563", fontWeight: "600" }}>
               Your order is on the way
             </Text>
           </View>
           <Image
             source={require("../../assets/images/Take Away.gif")}
-            className="w-20 h-20 rounded-full"
+            style={{
+              width: 80,
+              height: 80,
+              borderRadius: 40,
+            }}
           />
         </View>
       </View>
       <View
-        style={{ backgroundColor: themeColors.bgColor(0.8) }}
-        className="p-2 flex-row justify-between items-center rounded-full my-5 mx-2"
+        style={{
+          backgroundColor: themeColors.bgColor(1),
+          padding: 8,
+          flexDirection: "row",
+          justifyContent: "space-between",
+          alignItems: "center",
+          borderRadius: 10,
+          marginHorizontal: 8,
+          marginVertical: 8,
+        }}
       >
         <View
-          className="p-1 rounded-full"
-          style={{ backgroundColor: "rgba(255,255,255,0.4)" }}
+          style={{
+            padding: 4,
+            borderRadius: 9999,
+            backgroundColor: "rgba(255,255,255,0.4)",
+          }}
         >
           <Image
-            className="h-16 w-16 rounded-full"
             source={require("../../assets/images/profile-picture.jpg")}
+            style={{
+              height: 64,
+              width: 64,
+              borderRadius: 9999,
+            }}
           />
         </View>
-        <View className="flex-1 ml-3">
-          <Text className="text-lg font-bold text-white">Rijan Maharjan</Text>
-          <Text className="font-semibold text-white">Your Rider</Text>
+        <View style={{ flex: 1, marginLeft: 12 }}>
+          <Text style={{ fontSize: 18, fontWeight: "bold", color: "white" }}>
+            Rijan Maharjan
+          </Text>
+          <Text style={{ fontWeight: "600", color: "white" }}>Your Rider</Text>
         </View>
         <View className="flex-row items-center space-x-3 mr-3">
           <TouchableOpacity className="bg-white p-2 rounded-full">
@@ -85,13 +99,11 @@ export default function DeliveryScreen() {
               strokeWidth={1}
             />
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => navigation.navigate('Home')} className="bg-white p-2 rounded-full">
-            <Icon.X
-              fill={'red'}
-              stroke={'red'}
-              strokeWidth={4}
-            />
-          </TouchableOpacity>
+          <Link href={"/(tabs)/"} asChild>
+            <TouchableOpacity className="bg-white p-2 rounded-full" style={{marginLeft:10}}>
+              <Icon.X fill={"red"} stroke={"red"} strokeWidth={4} />
+            </TouchableOpacity>
+          </Link>
         </View>
       </View>
     </SafeAreaView>

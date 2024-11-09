@@ -52,7 +52,7 @@ const MyAccountComp = () => {
           label="Favourites"
         />
         <PageRedirectBtn
-          redirectTo="/(screens)/OrderScreen"
+          redirectTo="/(screens)/MapViewScreen"
           IconComponent={Icon.Map}
           label="My Address"
         />
@@ -62,15 +62,13 @@ const MyAccountComp = () => {
           label="Change Password"
         />
         <TouchableOpacity
-          onPress={() => navigation.navigate({ redirectTo })}
+          // onPress={() => handleSignOut()}
           style={{
             marginTop: 10,
             paddingHorizontal: 20,
             paddingVertical: 20,
             backgroundColor: themeColors.bgColor(1),
             borderRadius: 10,
-            // borderWidth: 2,
-            // borderColor: "white",
           }}
         >
           <View style={{ flexDirection: "row", alignItems: "center" }}>
