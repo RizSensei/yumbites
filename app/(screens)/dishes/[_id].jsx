@@ -5,7 +5,7 @@ import { useCart } from "@/hooks/useCart";
 import { addToCart } from "@/redux/slices/cartSlice";
 import { Image } from "expo-image";
 import { useLocalSearchParams, useNavigation } from "expo-router";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import {
   SafeAreaView,
   ScrollView,
@@ -18,36 +18,31 @@ import * as Icon from "react-native-feather";
 import { useDispatch } from "react-redux";
 
 export default function RestaurantScreen() {
-  const { id } = useLocalSearchParams();
+  const { _id } = useLocalSearchParams();
+  console.log(".......................",_id)
   const dispatch = useDispatch();
   const { cartItems } = useCart();
   const navigation = useNavigation();
-
-  const handleAddToCart = () => {
-    dispatch(addToCart({ ...item }));
-  };
-
-  const [itemExist, setItemExist] = useState(false);
   const [item, setItem] = useState(null);
 
-  useEffect(() => {
-    if (dishes) {
-      const item = dishes.find((dish) => dish?._id == id);
-      setItem(item);
+  const handleAddToCart = () => {
+    if (item) {
+      dispatch(addToCart({ ...item }));
     }
-  }, [dishes, id]);
+  };
 
   useEffect(() => {
-    const itemExistInCart = cartItems.some((dish) => dish?.name === item?.name);
-    if (itemExistInCart) {
-      setItemExist(true);
-    } else {
-      setItemExist(false);
-    }
-  }, [id]);
+    const selectedItem = dishes.find((dish) => dish?._id == _id);
+    console.log(selectedItem);
+    setItem(selectedItem);
+  }, [_id]);
+
+  const itemExist = useMemo(() => {
+    return cartItems.some((dish) => dish?.name === item?.name);
+  }, [cartItems, item?.name]);
 
   return (
-    <SafeAreaView style={{ flex:1, marginTop: StatusBar.currentHeight }}>
+    <SafeAreaView style={{ flex: 1, marginTop: StatusBar.currentHeight }}>
       <CartIcon />
       <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
         <Image

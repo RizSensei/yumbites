@@ -1,6 +1,6 @@
 import { themeColors } from "@/constants/Colors";
 import { useNavigation } from "@react-navigation/native";
-import React from "react";
+import React, { useMemo } from "react";
 import {
   Image,
   ProgressBarAndroid,
@@ -14,7 +14,14 @@ import PageHeader from "../PageHeader";
 import MyAccountComp from "./MyAccountComp";
 
 const AuthProfileComp = () => {
-  const navigation = useNavigation();
+
+  const user = useMemo(() => ({
+    name: "Anonymous User",
+    email: "anonymoususer@gmail.com",
+    loyaltyPoints: 0,
+    loyaltyProgress: 0.175,
+  }), []);
+
   return (
     <>
       <SafeAreaView style={{ marginTop: StatusBar.currentHeight }}>
@@ -63,7 +70,7 @@ const AuthProfileComp = () => {
                 }}
               >
                 <Text style={{ fontWeight: "bold", fontSize: 15 }}>
-                  Anonymous User
+                  {user.name}
                 </Text>
                 <Text
                   style={{
@@ -73,7 +80,7 @@ const AuthProfileComp = () => {
                     fontSize: 10,
                   }}
                 >
-                  anonmoususer@gmail.cr@gmail.com
+                  {user.email}
                 </Text>
               </View>
             </View>
@@ -95,13 +102,13 @@ const AuthProfileComp = () => {
                 }}
               >
                 <Text style={{ color: "white", fontWeight: "bold" }}>
-                  Your Loyalty Points: 0Pts
+                  Your Loyalty Points: {user.loyaltyPoints}Pts
                 </Text>
                 <View style={{ paddingVertical: 10 }}>
                   <ProgressBarAndroid
                     styleAttr="Horizontal"
                     indeterminate={false}
-                    progress={0.175}
+                    progress={user.loyaltyProgress}
                     color="white"
                   />
                 </View>
@@ -115,87 +122,6 @@ const AuthProfileComp = () => {
             {/* loyalty program  */}
 
             <MyAccountComp />
-
-            {/* <TouchableOpacity
-          //  onPress={() => handleSignOut()}
-          >
-            <View
-              style={{
-                marginTop: 10,
-                backgroundColor: themeColors.bgColor(0.9),
-                paddingHorizontal: 12,
-                paddingVertical: 20,
-                borderRadius: 10,
-                flexDirection: "row",
-                justifyContent: "space-between",
-                alignItems: "center",
-              }}
-            >
-              <Text
-                style={{
-                  color: "white",
-                  fontSize: 12,
-                }}
-              >
-                My Profile
-              </Text>
-              <Icon.Triangle
-                height={15}
-                width={15}
-                strokeWidth={2}
-                stroke="white"
-                style={{ transform: [{ rotate: "90deg" }] }}
-              />
-            </View>
-          </TouchableOpacity>
-          <TouchableOpacity
-          //  onPress={() => handleSignOut()}
-          >
-            <View
-              style={{
-                marginTop: 10,
-                backgroundColor: themeColors.bgColor(0.75),
-                paddingHorizontal: 12,
-                paddingVertical: 20,
-                borderRadius: 10,
-                flexDirection: "row",
-                justifyContent: "space-between",
-                alignItems: "center",
-              }}
-            >
-              <Text
-                style={{
-                  color: "white",
-                  fontSize: 12,
-                }}
-              >
-                General Settings
-              </Text>
-              <Icon.Triangle
-                height={15}
-                width={15}
-                strokeWidth={2}
-                stroke="white"
-                style={{ transform: [{ rotate: "90deg" }] }}
-              />
-            </View>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => handleSignOut()}>
-            <Text
-              style={{
-                marginTop: 10,
-                backgroundColor: "red",
-                color: "white",
-                paddingHorizontal: 12,
-                paddingVertical: 20,
-                borderRadius: 10,
-                alignText: "center",
-                fontSize: 12,
-              }}
-            >
-              Sign Out
-            </Text>
-          </TouchableOpacity> */}
           </ScrollView>
         </View>
       </SafeAreaView>

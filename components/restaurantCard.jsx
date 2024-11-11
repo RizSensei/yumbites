@@ -5,9 +5,9 @@ import { Image, Text, TouchableWithoutFeedback, View } from "react-native";
 import * as Icon from "react-native-feather";
 
 export default function RestaurantCard({ dish }) {
-  const id = dish._id;
+  const { _id, image, name, rating, category } = dish;
   return (
-    <Link href={`/(screens)/dishes/${id}`} asChild>
+    <Link href={`/(screens)/dishes/${_id}`} asChild>
       <TouchableWithoutFeedback>
         <View
           className="mr-6 bg-white rounded-3xl overflow-hidden"
@@ -19,11 +19,11 @@ export default function RestaurantCard({ dish }) {
           <View className="h-36 w-64">
             <Image
               className="h-full w-full object-scale-down"
-              source={{ uri: dish.image }}
+              source={{ uri: image }}
             />
           </View>
           <View className="px-3 pb-4 space-y-2">
-            <Text className="text-xl font-bold pt-2">{dish.name}</Text>
+            <Text className="text-xl font-bold pt-2">{name}</Text>
             <View className="flex-row items-center space-x-1">
               <Icon.Star
                 height="12"
@@ -34,11 +34,11 @@ export default function RestaurantCard({ dish }) {
               <Text className="text-xs">
                 <Text className="text-green-700">
                   {" "}
-                  {dish.rating ?? "4.75"}{" "}
+                  {rating ?? "4.75"}{" "}
                 </Text>
                 <Text className="text-gray-700">
                   &#40; 4.4K reviews&#41; .
-                  <Text className="font-semibold">{dish.category}</Text>
+                  <Text className="font-semibold">{category}</Text>
                 </Text>
               </Text>
             </View>

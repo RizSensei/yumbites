@@ -33,7 +33,6 @@ export const cartSlice = createSlice({
       }
     },
     removeDish: (state, action) => {
-      console.log("..........action", action);
       state.items.splice(action.payload, 1);
     },
     emptyCart: (state) => {

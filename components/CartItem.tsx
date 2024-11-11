@@ -5,7 +5,7 @@ import { themeColors } from "@/constants/Colors";
 import { addToCart, removeDish, removeFromCart } from "@/redux/slices/cartSlice";
 import * as Icon from "react-native-feather";
 
-const CartItem = (item: any) => {
+const CartItem = ({item}:{item: any}) => {
   const dispatch = useDispatch();
 
   return (
@@ -19,10 +19,10 @@ const CartItem = (item: any) => {
       marginTop: 8, 
     }}>
       <Text style={{ color: themeColors.text, fontWeight:'bold', marginRight:10 }}>
-        {item.item.quantity}x
+        {item.quantity}x
       </Text>
-      <Image className="h-14 w-14 rounded-full" style={{ marginRight:10 }} source={{ uri: item.item.image }} />
-      <Text className="flex-1 font-bold text-gray-700">{item.item.name}</Text>
+      <Image className="h-14 w-14 rounded-full" style={{ marginRight:10 }} source={{ uri: item.image }} />
+      <Text className="flex-1 font-bold text-gray-700">{item.name}</Text>
       <View className="flex-row items-center">
         <TouchableOpacity
           onPress={() => dispatch(removeFromCart({ ...item.item }))}
@@ -31,9 +31,9 @@ const CartItem = (item: any) => {
         >
           <Icon.Minus strokeWidth={2} height={18} width={18} stroke={"white"} />
         </TouchableOpacity>
-        <Text className="px-3">${item.item.price * item.item.quantity}</Text>
+        <Text className="px-3">${item.price * item.quantity}</Text>
         <TouchableOpacity
-          onPress={() => dispatch(addToCart({ ...item.item }))}
+          onPress={() => dispatch(addToCart(item))}
           className="p-1 rounded-full"
           style={{ backgroundColor: themeColors.bgColor(1) }}
         >
@@ -41,7 +41,7 @@ const CartItem = (item: any) => {
         </TouchableOpacity>
       </View>
       <TouchableOpacity
-        onPress={() => dispatch(removeDish(item.item.id))}
+        onPress={() => dispatch(removeDish(item.id))}
         className="p-1 rounded-full"
         style={{ backgroundColor: "red", marginLeft:5 }}
       >

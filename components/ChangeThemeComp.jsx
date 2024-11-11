@@ -1,8 +1,20 @@
 import React from "react";
 import { Modal, Pressable, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { themeColors } from '@/constants/Colors';
+import { themeColors } from "@/constants/Colors";
 
+const ColorCircle = ({ color }) => {
+  return (
+    <Pressable
+      style={{
+        height: 40,
+        width: 40,
+        borderRadius: 9999,
+        backgroundColor: color,
+      }}
+    />
+  );
+};
 
 const ChangeThemeComp = ({ themeModalVisible, setThemeModalVisible }) => {
   const styles = StyleSheet.create({
@@ -64,17 +76,7 @@ const ChangeThemeComp = ({ themeModalVisible, setThemeModalVisible }) => {
             <View style={{ marginVertical: 20 }}>
               <View style={{ flexDirection: "row", gap: 8 }}>
                 {colors.map((color, idx) => {
-                  return (
-                    <Pressable
-                      key={idx}
-                      style={{
-                        height: 40,
-                        width: 40,
-                        borderRadius: 9999,
-                        backgroundColor: color.color,
-                      }}
-                    />
-                  );
+                  return <ColorCircle key={idx} color={color.color} />;
                 })}
               </View>
             </View>

@@ -14,11 +14,8 @@ export default function Categories() {
           paddingHorizontal: 15,
         }}
       >
-        {categories.map((category, idx) => {
-          const { name, image } = category;
+        {categories.map(({ name, image }, idx) => {
           return (
-            <>
-            
              <Link href={`/(screens)/category/${name}`} key={idx} asChild>
               <TouchableOpacity style={{flexDirection:'column', alignItems:'center', marginRight:10}}>
                 <View
@@ -32,7 +29,6 @@ export default function Categories() {
                 <Text className={`text-sm`}>{name}</Text>
               </TouchableOpacity>
              </Link>
-            </>
           );
         })}
       </ScrollView>

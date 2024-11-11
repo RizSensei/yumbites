@@ -8,9 +8,7 @@ const NonAuthProfileComp = () => {
     <View className="h-full w-full flex flex-col items-center justify-center">
       <View className="flex-row justify-center items-center gap-10">
         <Link href="/(auth)/login" asChild>
-          <Pressable>
             <Text className="text-xl font-semibold">Login</Text>
-          </Pressable>
         </Link>
         <Text
           className="font-extrabold text-5xl"
@@ -19,9 +17,7 @@ const NonAuthProfileComp = () => {
           |
         </Text>
         <Link href="/(auth)/register" asChild>
-          <Pressable>
             <Text className="text-xl font-semibold">Register</Text>
-          </Pressable>
         </Link>
       </View>
     </View>

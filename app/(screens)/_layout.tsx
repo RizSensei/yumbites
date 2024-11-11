@@ -12,7 +12,7 @@ const _layout = () => {
       <Stack.Screen name="OrderPreparingScreen" options={{ headerShown: false }} />
       <Stack.Screen name="OrderScreen" options={{ headerShown: false }} />
       <Stack.Screen name="OtpValidationScreen" options={{ headerShown: false }} />
-      <Stack.Screen name="dishes/[id]" options={{ headerShown: false }} />
+      <Stack.Screen name="dishes/[_id]" options={{ headerShown: false }} />
       <Stack.Screen name="category/[category_name]" options={{ headerShown: false }} />
       <Stack.Screen name="MapViewScreen" options={{ headerShown: false }} />
     </Stack>

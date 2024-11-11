@@ -16,29 +16,42 @@ import "../../firebaseConfig";
 
 const register = () => {
   const authentication = getAuth();
-
   const router = useRouter();
-
-  const [hidePass, setHidePass] = useState(true);
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [hidePass, setHidePass] = useState(true);
 
   const handleSignUp = () => {
+    if (password !== confirmPassword) {
+      Toast.show({
+        type: "error",
+        text1: "Passwords do not match",
+      });
+      return;
+    }
+
     createUserWithEmailAndPassword(authentication, email, password)
       .then((res) => {
+      
         setEmail("");
         setPassword("");
         setConfirmPassword("");
+        
         Toast.show({
           type: "success",
           text1: "Registration Successful",
         });
+        
         router.push("/(auth)/login");
       })
       .catch((error) => {
-        console.log(error);
+        console.error(error);
+        Toast.show({
+          type: "error",
+          text1: error.message,
+        });
       });
   };
 
@@ -79,13 +92,13 @@ const register = () => {
           />
           <AppTextInput
             placeholder="Password"
-            secureTextEntry={hidePass ? true : false}
+            secureTextEntry={hidePass}
             value={password}
             onChangeText={setPassword}
           />
           <AppTextInput
             placeholder="Confirm Password"
-            secureTextEntry={hidePass ? true : false}
+            secureTextEntry={hidePass}
             value={confirmPassword}
             onChangeText={setConfirmPassword}
           />

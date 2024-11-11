@@ -8,7 +8,7 @@ const AppTextInput = ({ ...otherProps }) => {
   return (
     <TextInput
       onFocus={() => setFocused(true)}
-      onBlur={() => setFocused(true)}
+      onBlur={() => setFocused(false)}
       placeholderTextColor={"#626262"}
       style={[
         {

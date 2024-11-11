@@ -3,13 +3,12 @@ import PageHeader from "@/components/PageHeader";
 import { showToastForEmptyCart } from "@/components/toast";
 import { themeColors } from "@/constants/Colors";
 import { useCart } from "@/hooks/useCart";
-import { useNavigation } from "@react-navigation/native";
 import { useRouter } from "expo-router";
-import React from "react";
+import React, { useMemo } from "react";
 import {
   FlatList,
+  Image,
   SafeAreaView,
-  ScrollView,
   StatusBar,
   Text,
   TouchableOpacity,
@@ -20,9 +19,22 @@ const cart = () => {
   const { cartItems, cartTotal } = useCart();
   const router = useRouter();
 
-  let delivery_charge = (0.05 * cartTotal).toFixed(2);
-  let total_charge_after_delivery =
-    parseFloat(delivery_charge) + parseFloat(cartTotal);
+  let delivery_charge = useMemo(
+    () => (0.05 * cartTotal).toFixed(2),
+    [cartTotal]
+  );
+  let total_charge_after_delivery = useMemo(
+    () => parseFloat(delivery_charge) + parseFloat(cartTotal),
+    [delivery_charge, cartTotal]
+  );
+
+  const handlePlaceOrder = () => {
+    if (cartItems.length === 0) {
+      showToastForEmptyCart();
+    } else {
+      router.push("/(screens)/CartSummaryScreen");
+    }
+  };
 
   return (
     <SafeAreaView style={{ flex: 1, marginTop: StatusBar.currentHeight }}>
@@ -33,6 +45,24 @@ const cart = () => {
             data={cartItems}
             keyExtractor={(item) => item._id}
             renderItem={({ item }) => <CartItem item={item} />}
+            ListEmptyComponent={
+              <View
+                style={{
+                  height: "100%",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <View style={{ backgroundColor: "inherit", opacity: 0.5 }}>
+                  <Image
+                    style={{ height: 100 }}
+                    resizeMode="contain"
+                    source={require("../../assets/images/shopping-cart-empty-side-view.png")}
+                  />
+                </View>
+              </View>
+            }
           />
         </View>
         <View
@@ -60,13 +90,9 @@ const cart = () => {
               ${total_charge_after_delivery}{" "}
             </Text>
           </View>
-          <View style={{marginTop:10}}>
+          <View style={{ marginTop: 10 }}>
             <TouchableOpacity
-              onPress={
-                cartItems.length === 0
-                  ? showToastForEmptyCart
-                  : () => router.push("/(screens)/CartSummaryScreen")
-              }
+              onPress={handlePlaceOrder}
               style={{ backgroundColor: themeColors.bgColor(1) }}
               className="p-3 rounded-full"
             >

@@ -1,49 +1,54 @@
+import { themeColors } from "@/constants/Colors";
+import { dishes } from "@/constants/mock/dishes-data";
+import { Image } from "expo-image";
 import { Link, useLocalSearchParams } from "expo-router";
-import React, { useEffect, useState } from "react";
+import React, { useMemo, useState } from "react";
 import {
   SafeAreaView,
   ScrollView,
   StatusBar,
   Text,
   TextInput,
-  TouchableWithoutFeedback,
-  View,
+  View
 } from "react-native";
-import { dishes } from "@/constants/mock/dishes-data";
-import { themeColors } from "@/constants/Colors";
 import * as Icon from "react-native-feather";
+import { useDebounce } from "use-debounce";
 import PageHeader from "../../../components/PageHeader";
-import { Image } from "expo-image";
 
 const CategoryDishesScreen = () => {
-  const [search, setSearch] = useState("");
-
   const { category_name } = useLocalSearchParams();
-  const [item, setItem] = useState(null);
-  const [filteredDishes, setFilteredDishes] = useState(null);
-  console.log(filteredDishes);
+  const [search, setSearch] = useState("");
+  const [debouncedSearch] = useDebounce(search, 500);
 
-  useEffect(() => {
-    if (dishes && category_name) {
-      const item = dishes.filter((dish) =>
-        dish.category.toLowerCase().includes(category_name.toLowerCase())
-      );
-      setFilteredDishes(item);
-    }
+  const filteredByCategory = useMemo(() => {
+    if (!dishes || !category_name) return [];
+    return dishes.filter((dish) =>
+      dish.category.toLowerCase().includes(category_name.toLowerCase())
+    );
   }, [dishes, category_name]);
 
-  const handleSearch = (value) => {
-    setSearch(value);
+  const filteredDishes = useMemo(() => {
+    if (!debouncedSearch) return filteredByCategory;
+    return filteredByCategory.filter((dish) =>
+      dish.name.toLowerCase().includes(debouncedSearch.toLowerCase())
+    );
+  }, [debouncedSearch, filteredByCategory]);
 
-    if (!value) {
-      setFilteredDishes(item);
-    } else {
-      const searchDishes = item.filter((dish) =>
-        dish.name.toLowerCase().includes(value.toLowerCase())
-      );
-      setFilteredDishes(searchDishes);
-    }
-  };
+  const handleSearch = (value) => setSearch(value);
+
+  if ((filteredDishes.length === 0))
+    return (
+      <View
+        style={{
+          paddingHorizontal: 20,
+          paddingVertical: 20,
+          flexDirection: "row",
+          justifyContent: "center",
+        }}
+      >
+        <Text style={{ color: "gray", fontWeight: "bold" }}>No Dish Found</Text>
+      </View>
+    );
 
   return (
     <SafeAreaView style={{ marginTop: StatusBar.currentHeight }}>
@@ -105,90 +110,75 @@ const CategoryDishesScreen = () => {
         showsVerticalScrollIndicator={false}
         style={{ paddingTop: 10, paddingHorizontal: 20, paddingBottom: 10 }}
       >
-        {filteredDishes?.length > 0 ? (
-          filteredDishes?.map((dish, idx) => {
-            const id = dish?._id;
-            return (
-              <Link key={idx} href={`/(screens)/dishes/${id}`} asChild>
+        {filteredDishes?.map((dish, idx) => {
+          const {_id, image, name, description, rating, category } = dish;
+          return (
+            <Link key={idx} href={`/(screens)/dishes/${_id}`}>
+              <View
+                style={{
+                  backgroundColor: "white",
+                  paddingVertical: 5,
+                  paddingHorizontal: 5,
+                  borderRadius: 10,
+                  shadowColor: themeColors.bgColor(0.2),
+                  shadowRadius: 7,
+                  marginVertical: 5,
+                  flexDirection: "row"
+                }}
+              >
                 <View
                   style={{
-                    backgroundColor:'white',
-                    paddingVertical:5,
-                    paddingHorizontal:5,
+                    height: 60,
+                    aspectRatio: 1 / 1,
                     borderRadius: 10,
-                    shadowColor: themeColors.bgColor(0.2),
-                    shadowRadius: 7,
-                    marginVertical: 5,
-                    flexDirection: "row",
+                    overflow: "hidden",
                   }}
                 >
-                  <View
+                  <Image
                     style={{
-                      height: 60,
-                      aspectRatio: 1 / 1,
-                      borderRadius: 10,
-                      overflow: "hidden",
+                      height: "100%",
+                      width: "100%",
+                      objectFit: "scale-down",
                     }}
-                  >
-                    <Image
-                      style={{
-                        height: "100%",
-                        width: "100%",
-                        objectFit: "scale-down",
-                      }}
-                      source={{ uri: dish.image }}
-                    />
-                  </View>
+                    source={{ uri: image }}
+                  />
+                </View>
 
-                  <View style={{ marginLeft: 10, flexDirection: "column" }}>
-                    <Text className="text-xl font-bold">{dish.name}</Text>
-                    <Text
-                      numberOfLines={1}
-                      className="text-xs font-medium mt-1"
-                      style={{ color: "gray" }}
-                    >
-                      {dish.description}
-                    </Text>
-                    <View
-                      style={{ marginTop: 4 }}
-                      className="flex-row items-center space-x-1"
-                    >
-                      <Icon.Star
-                        height="12"
-                        width="12"
-                        stroke={themeColors.bgColor(1)}
-                        strokeWidth={2.5}
-                      />
-                      <Text className="text-xs">
-                        <Text className="text-green-700">
-                          {" "}
-                          {dish.rating ?? "4.75"}{" "}
-                        </Text>
-                        <Text className="text-gray-700">
-                          &#40; 4.4K reviews&#41; .
-                          <Text className="font-semibold">{dish.category}</Text>
-                        </Text>
+                <View style={{ marginLeft: 10, flexDirection: "column" }}>
+                  <Text className="text-xl font-bold">{name}</Text>
+                  <Text
+                    numberOfLines={1}
+                    className="text-xs font-medium mt-1"
+                    style={{ color: "gray" }}
+                  >
+                    {description}
+                  </Text>
+                  <View
+                    style={{ marginTop: 4 }}
+                    className="flex-row items-center space-x-1"
+                  >
+                    <Icon.Star
+                      height="12"
+                      width="12"
+                      stroke={themeColors.bgColor(1)}
+                      strokeWidth={2.5}
+                    />
+                    <Text className="text-xs">
+                      <Text className="text-green-700">
+                        {" "}
+                        {rating ?? "4.75"}{" "}
                       </Text>
-                    </View>
+                      <Text className="text-gray-700">
+                        &#40; 4.4K reviews&#41; .
+                        <Text className="font-semibold">{category}</Text>
+                      </Text>
+                    </Text>
                   </View>
                 </View>
-              </Link>
-            );
-          })
-        ) : (
-          <View
-            style={{
-              paddingHorizontal: 20,
-              paddingVertical: 20,
-              flexDirection: "row",
-              justifyContent: "center",
-            }}
-          >
-            <Text style={{ color: "gray", fontWeight: "bold" }}>
-              No Dish Found
-            </Text>
-          </View>
-        )}
+              </View>
+            </Link>
+          );
+        })}
       </ScrollView>
     </SafeAreaView>
   );

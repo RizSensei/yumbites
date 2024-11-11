@@ -3,7 +3,7 @@ import { themeColors } from "@/constants/Colors";
 import { useCart } from "@/hooks/useCart";
 import { useNavigation } from "@react-navigation/native";
 import { Link } from "expo-router";
-import React from "react";
+import React, { useMemo } from "react";
 import {
   Image,
   SafeAreaView,
@@ -11,19 +11,21 @@ import {
   StatusBar,
   Text,
   TouchableOpacity,
-  View
+  View,
 } from "react-native";
 
 const CartSummaryScreen = () => {
   const { cartItems, cartTotal } = useCart();
 
-  let delivery_charge = (0.05 * cartTotal).toFixed(2);
-  let total_charge_after_delivery =
-    parseFloat(delivery_charge) + parseFloat(cartTotal);
+  const delivery_charge = useMemo(() => parseFloat((0.05 * cartTotal).toFixed(2)), [cartTotal]);
+  const total_charge_after_delivery = useMemo(() => cartTotal + delivery_charge, [cartTotal, delivery_charge]);
+
+  const formatCurrency = (amount) =>
+    new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(amount);
 
   return (
-    <SafeAreaView  style={{ flex: 1, marginTop: StatusBar.currentHeight }}>
-     <PageHeader label="Cart Summary" backOption={true} />
+    <SafeAreaView style={{ flex: 1, marginTop: StatusBar.currentHeight }}>
+      <PageHeader label="Cart Summary" backOption={true} />
 
       <ScrollView
         showsVerticalScrollIndicator={false}
@@ -36,13 +38,20 @@ const CartSummaryScreen = () => {
               key={index}
               className="flex-row items-center space-x-3 py-2 px-4 bg-white rounded-3xl mt-2"
             >
-              <Text className="font-bold" style={{ color: themeColors.text, fontWeight:'bold', marginRight:10 }}>
+              <Text
+                className="font-bold"
+                style={{
+                  color: themeColors.text,
+                  fontWeight: "bold",
+                  marginRight: 10,
+                }}
+              >
                 {item.quantity}x
               </Text>
               <Image
                 className="h-8 w-8 rounded-full"
                 source={{ uri: item.image }}
-                style={{ marginRight:10 }}
+                style={{ marginRight: 10 }}
               />
               <Text className="flex-1 font-bold text-gray-700">
                 {item.name}
@@ -80,7 +89,7 @@ const CartSummaryScreen = () => {
           <Text>
             <Text style={{ fontWeight: "bold" }}>Delivery Charges: </Text>
             <Text style={{ color: themeColors.text, fontWeight: "bold" }}>
-              ${delivery_charge}
+              {formatCurrency(delivery_charge)}
             </Text>
           </Text>
         </View>
@@ -96,16 +105,27 @@ const CartSummaryScreen = () => {
           <Text>
             <Text style={{ fontWeight: "bold" }}>Total Amount: </Text>
             <Text style={{ color: themeColors.text, fontWeight: "bold" }}>
-              ${total_charge_after_delivery}
+              {formatCurrency(total_charge_after_delivery)}
             </Text>
           </Text>
         </View>
 
         <View
-          style={{ backgroundColor: themeColors.bgColor(0.2), margin: 10, paddingHorizontal:10, paddingVertical:20, borderRadius:15 }}
+          style={{
+            backgroundColor: themeColors.bgColor(0.2),
+            margin: 10,
+            paddingHorizontal: 10,
+            paddingVertical: 20,
+            borderRadius: 15,
+          }}
         >
           <Text
-            style={{ textAlign: "center", fontSize: 20, fontWeight: "bold", color:themeColors.text }}
+            style={{
+              textAlign: "center",
+              fontSize: 20,
+              fontWeight: "bold",
+              color: themeColors.text,
+            }}
           >
             Apply Promo Code to get 5% off !!!
           </Text>
@@ -113,7 +133,13 @@ const CartSummaryScreen = () => {
       </ScrollView>
 
       <View
-        style={{ backgroundColor: themeColors.bgColor(0.2), paddingVertical:32, paddingHorizontal:10, borderTopLeftRadius:20, borderTopRightRadius:20 }}
+        style={{
+          backgroundColor: themeColors.bgColor(0.2),
+          paddingVertical: 32,
+          paddingHorizontal: 10,
+          borderTopLeftRadius: 20,
+          borderTopRightRadius: 20,
+        }}
         className="p-6 px-8 rounded-t-3xl space-y-4"
       >
         <Link href={"/(screens)/OrderPreparingScreen"} asChild>
