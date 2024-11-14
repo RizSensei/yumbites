@@ -15,7 +15,7 @@ import {
 } from "react-native";
 import * as Icon from "react-native-feather";
 import Categories from "../categories";
-import ChangeThemeComp from "../ChangeThemeComp";
+import ChangeThemeComp from "../ModalComp/ChangeThemeComp";
 import FeaturedRow from "../featuredRow";
 
 const HomeComp = () => {

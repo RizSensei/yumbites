@@ -26,7 +26,6 @@ export const Colors = {
 };
 
 export const themeColors = {
-  text: "#15803D",
-  bgColor: (opacity: number) => `rgba(21, 128, 61, ${opacity})`,
-  bgGray: (opacity: number) => `rgba(243,244, 246, ${opacity})`,
+  text: "rgba(21, 128, 61, 1)",
+  bgColor: (opacity: number) => `rgba(21, 128, 61, ${opacity})`
 };

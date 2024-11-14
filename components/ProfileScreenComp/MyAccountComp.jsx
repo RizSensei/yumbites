@@ -4,6 +4,9 @@ import { Pressable, Text, TouchableOpacity, View } from "react-native";
 import * as Icon from "react-native-feather";
 import { themeColors } from "@/constants/Colors";
 import { Link, useRouter } from "expo-router";
+import { getAuth, signOut } from "firebase/auth";
+import { showToastForIncorrectCredentials } from "../toast";
+import { useAuth } from "@/context/AuthContext";
 
 const PageRedirectBtn = ({ redirectTo, IconComponent, label }) => {
   const router = useRouter();
@@ -34,6 +37,17 @@ const PageRedirectBtn = ({ redirectTo, IconComponent, label }) => {
 
 const MyAccountComp = () => {
   const navigation = useNavigation();
+  const { setIsAuthenticated } = useAuth();
+  const auth = getAuth();
+  const handleSignOut = async () => {
+    signOut(auth).then((res) => {
+        setIsAuthenticated(false);
+        // router.push("/(tabs)");
+      })
+      .catch((err) => {
+        console.log("......................",err)
+      });
+  };
 
   return (
     <View style={{ marginVertical: 20 }}>
@@ -62,7 +76,7 @@ const MyAccountComp = () => {
           label="Change Password"
         />
         <TouchableOpacity
-          // onPress={() => handleSignOut()}
+          onPress={() => handleSignOut()}
           style={{
             marginTop: 10,
             paddingHorizontal: 20,

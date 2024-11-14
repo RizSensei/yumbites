@@ -9,11 +9,12 @@ import {
   StatusBar,
   Text,
   TextInput,
-  View
+  View,
 } from "react-native";
 import * as Icon from "react-native-feather";
 import { useDebounce } from "use-debounce";
-import PageHeader from "../../components/PageHeader";
+import PageHeader from "@/components/PageHeader";
+// import RefreshControlComp from "@/components/RefreshControlComp";
 
 const AllDishesScreen = () => {
   const [search, setSearch] = useState("");
@@ -89,23 +90,28 @@ const AllDishesScreen = () => {
 
       <ScrollView
         showsVerticalScrollIndicator={false}
-        style={{ paddingTop: 10, paddingHorizontal: 20, paddingBottom: 10 }}
+        style={{ paddingTop: 10, paddingHorizontal: 20, paddingBottom: 10, width:'100%' }}
+        // refreshControl={<RefreshControlComp />}
       >
         {filteredDishes.map((dish, idx) => {
-          const {_id, image, name, description, rating, category } = dish;
+          const { _id, image, name, description, rating, category } = dish;
           return (
-            <Link key={idx} href={`/(screens)/dishes/${_id}`} style={{width:'100%'}}>
+            <Link
+              key={idx}
+              href={`/(screens)/dishes/${_id}`}
+              style={{ width: "100%", marginVertical: 5 }}
+            >
               <View
                 style={{
                   backgroundColor: "white",
                   paddingVertical: 5,
                   paddingHorizontal: 5,
+
                   borderRadius: 10,
                   shadowColor: themeColors.bgColor(0.2),
                   shadowRadius: 7,
-                  marginVertical: 5,
                   flexDirection: "row",
-                  width:'100%'
+                  width: "100%",
                 }}
               >
                 <View
@@ -130,8 +136,8 @@ const AllDishesScreen = () => {
                 <View style={{ marginLeft: 10, flexDirection: "column" }}>
                   <Text className="text-xl font-bold">{name}</Text>
                   <Text
-                    numberOfLines={1}
-                    className="text-xs font-medium mt-1"
+                    // numberOfLines={1}
+                    className="text-xs font-medium mt-1 line-clamp-1"
                     style={{ color: "gray" }}
                   >
                     {description}

@@ -12,15 +12,18 @@ import {
 } from "react-native";
 import PageHeader from "../PageHeader";
 import MyAccountComp from "./MyAccountComp";
+import { getAuth } from "firebase/auth";
 
 const AuthProfileComp = () => {
-
-  const user = useMemo(() => ({
-    name: "Anonymous User",
-    email: "anonymoususer@gmail.com",
-    loyaltyPoints: 0,
-    loyaltyProgress: 0.175,
-  }), []);
+  const user = useMemo(
+    () => ({
+      name: "Anonymous User",
+      email: "anonymoususer@gmail.com",
+      loyaltyPoints: 0,
+      loyaltyProgress: 0.175,
+    }),
+    []
+  );
 
   return (
     <>

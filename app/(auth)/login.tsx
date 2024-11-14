@@ -5,6 +5,7 @@ import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { themeColors } from "@/constants/Colors";
 import AppTextInput from "../../components/appTextInput";
+import PasswordTextInput from "../../components/passwordTextInput";
 import { showToastForIncorrectCredentials } from "../../components/toast";
 import { useAuth } from "@/context/AuthContext";
 import "../../firebaseConfig";
@@ -15,12 +16,12 @@ const login = () => {
   const [email, setEmail] = useState("meroaccount@gmail.com");
   const [password, setPassword] = useState("12345678");
 
-  const authentication = getAuth();
+  const auth = getAuth();
 
   const { setIsAuthenticated } = useAuth();
 
   const handleSignIn = async () => {
-    signInWithEmailAndPassword(authentication, email, password)
+    signInWithEmailAndPassword(auth, email, password)
       .then((res) => {
         setIsAuthenticated(true);
         router.push("/(tabs)");
@@ -65,7 +66,7 @@ const login = () => {
             value={email}
             onChangeText={setEmail}
           />
-          <AppTextInput
+          <PasswordTextInput
             placeholder="Password"
             value={password}
             onChangeText={setPassword}

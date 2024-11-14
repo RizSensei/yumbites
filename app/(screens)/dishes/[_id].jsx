@@ -19,7 +19,6 @@ import { useDispatch } from "react-redux";
 
 export default function RestaurantScreen() {
   const { _id } = useLocalSearchParams();
-  console.log(".......................",_id)
   const dispatch = useDispatch();
   const { cartItems } = useCart();
   const navigation = useNavigation();
@@ -33,7 +32,6 @@ export default function RestaurantScreen() {
 
   useEffect(() => {
     const selectedItem = dishes.find((dish) => dish?._id == _id);
-    console.log(selectedItem);
     setItem(selectedItem);
   }, [_id]);
 

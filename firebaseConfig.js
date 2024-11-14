@@ -1,8 +1,6 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-import { getAnalytics, isSupported } from "firebase/analytics";
-import { initializeAuth, getReactNativePersistence } from "firebase/auth";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { getAuth } from "firebase/auth";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -19,20 +17,22 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 
 // Conditionally initialize Analytics if supported
-const initializeAnalytics = async () => {
-  const supported = await isSupported();
-  if (supported) {
-    const analytics = getAnalytics(app);
-    console.log("Firebase Analytics initialized");
-  } else {
-    console.warn("Firebase Analytics is not supported in this environment.");
-  }
-};
-initializeAnalytics();
+// const initializeAnalytics = async () => {
+//   const supported = await isSupported();
+//   if (supported) {
+//     const analytics = getAnalytics(app);
+//     console.log("Firebase Analytics initialized");
+//   } else {
+//     console.warn("Firebase Analytics is not supported in this environment.");
+//   }
+// };
+// initializeAnalytics();
 
 // Initialize Auth with AsyncStorage for persistence in React Native
-const auth = initializeAuth(app, {
-  persistence: getReactNativePersistence(AsyncStorage),
-});
+// const auth = initializeAuth(app, {
+//   persistence: getReactNativePersistence(AsyncStorage),
+// });
+
+const auth = getAuth(app);
 
 export { app, auth };

@@ -13,15 +13,15 @@ import { themeColors } from "@/constants/Colors";
 import AppTextInput from "@/components/appTextInput";
 import { Link, router, useNavigation, useRouter } from "expo-router";
 import "../../firebaseConfig";
+import PasswordTextInput from "@/components/passwordTextInput";
 
 const register = () => {
-  const authentication = getAuth();
+  const auth = getAuth();
   const router = useRouter();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [hidePass, setHidePass] = useState(true);
 
   const handleSignUp = () => {
     if (password !== confirmPassword) {
@@ -32,7 +32,7 @@ const register = () => {
       return;
     }
 
-    createUserWithEmailAndPassword(authentication, email, password)
+    createUserWithEmailAndPassword(auth, email, password)
       .then((res) => {
       
         setEmail("");
@@ -90,7 +90,7 @@ const register = () => {
             value={email}
             onChangeText={setEmail}
           />
-          <AppTextInput
+          {/* <AppTextInput
             placeholder="Password"
             secureTextEntry={hidePass}
             value={password}
@@ -101,10 +101,15 @@ const register = () => {
             secureTextEntry={hidePass}
             value={confirmPassword}
             onChangeText={setConfirmPassword}
-          />
+          /> */}
+          <PasswordTextInput placeholder={"Password"} value={password} onChangeText={setPassword} />
+
+          <PasswordTextInput placeholder={"Confirm Password"} value={confirmPassword} onChangeText={setConfirmPassword} />
+
         </View>
-        <Link href="/(screens)/OtpValidationScreen" asChild>
+        {/* <Link href="/(screens)/OtpValidationScreen" asChild> */}
           <Pressable
+          onPress={() => handleSignUp()}
             style={{
               padding: 20,
               marginVertical: 10,
@@ -126,7 +131,7 @@ const register = () => {
               Sign up
             </Text>
           </Pressable>
-        </Link>
+        {/* </Link> */}
         <Link href="/(auth)/login" asChild>
           <Pressable
             style={{
