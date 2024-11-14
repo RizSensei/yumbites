@@ -19,6 +19,7 @@ const AppTextInput = ({ ...otherProps }) => {
           marginVertical: 10,
           borderColor: "#c2c2c2",
           borderWidth: 3,
+          width:'100%'
         },
         focused && {
           borderColor: themeColors.text,

@@ -1,8 +1,8 @@
 import { themeColors } from "@/constants/Colors";
-import { useNavigation } from "@react-navigation/native";
-import React, { useMemo } from "react";
+import React, { useMemo, useState } from "react";
 import {
   Image,
+  Pressable,
   ProgressBarAndroid,
   SafeAreaView,
   ScrollView,
@@ -10,9 +10,9 @@ import {
   Text,
   View,
 } from "react-native";
+import UpdateDisplayName from "../ModalComp/UpdateDisplayName";
 import PageHeader from "../PageHeader";
 import MyAccountComp from "./MyAccountComp";
-import { getAuth } from "firebase/auth";
 
 const AuthProfileComp = () => {
   const user = useMemo(
@@ -24,6 +24,8 @@ const AuthProfileComp = () => {
     }),
     []
   );
+  const [updateDisplayNameModalVisible, setUpdateDisplayNameModalVisible] =
+    useState(false);
 
   return (
     <>
@@ -85,6 +87,21 @@ const AuthProfileComp = () => {
                 >
                   {user.email}
                 </Text>
+                <Pressable
+                  onPress={() => setUpdateDisplayNameModalVisible(true)}
+                >
+                  <Text
+                    style={{
+                      marginVertical: 2,
+                      fontWeight: "semibold",
+                      color: "rgb(217 119 6)",
+                      fontSize: 10,
+                      textDecorationLine: "underline",
+                    }}
+                  >
+                    Update your display name
+                  </Text>
+                </Pressable>
               </View>
             </View>
 
@@ -127,6 +144,13 @@ const AuthProfileComp = () => {
             <MyAccountComp />
           </ScrollView>
         </View>
+
+        {updateDisplayNameModalVisible && (
+          <UpdateDisplayName
+            updateDisplayNameModalVisible={updateDisplayNameModalVisible}
+            setUpdateDisplayNameModalVisible={setUpdateDisplayNameModalVisible}
+          />
+        )}
       </SafeAreaView>
     </>
   );
