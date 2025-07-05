@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { calculateTotal } from "../../utils/helpers";
 
 const initialState = {
   items: [],
@@ -9,7 +10,7 @@ export const cartSlice = createSlice({
   initialState,
   reducers: {
     addToCart: (state, action) => {
-      let itemIndex = state.items.findIndex(
+      const itemIndex = state.items.findIndex(
         (item) => item.name === action.payload.name
       );
       if (itemIndex >= 0) {
@@ -19,7 +20,7 @@ export const cartSlice = createSlice({
       }
     },
     removeFromCart: (state, action) => {
-      let itemIndex = state.items.findIndex(
+      const itemIndex = state.items.findIndex(
         (item) => item.name === action.payload.name
       );
       if (itemIndex >= 0) {
@@ -47,16 +48,13 @@ export const { addToCart, removeFromCart, emptyCart, removeDish } =
 
 export const selectCartItems = (state) => state.cart.items;
 
-export const selectCartTotal = (state) =>
-  state.cart.items
-    .reduce((total, item) => total + item.price * item.quantity, 0)
-    .toFixed(2);
+export const selectCartTotal = (state) => calculateTotal(state.cart.items);
 
 export const selectCartLength = (state) => state.cart.items.length;
 
 export const selectDishCountInCart = (state, id) => {
-  const dishExist = state.cart.items.find((item) => (item.id = id));
-  return dishExist ? item.quantity : 0;
+  const dishExist = state.cart.items.find((item) => item.id === id);
+  return dishExist ? dishExist.quantity : 0;
 };
 
 export default cartSlice.reducer;

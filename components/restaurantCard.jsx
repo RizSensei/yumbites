@@ -3,9 +3,11 @@ import { Link } from "expo-router";
 import React from "react";
 import { Image, Text, TouchableWithoutFeedback, View } from "react-native";
 import * as Icon from "react-native-feather";
+import { APP_CONSTANTS } from "@/constants/AppConstants";
 
 export default function RestaurantCard({ dish }) {
   const { _id, image, name, rating, category } = dish;
+  
   return (
     <Link href={`/(screens)/dishes/${_id}`} asChild>
       <TouchableWithoutFeedback>
@@ -33,11 +35,10 @@ export default function RestaurantCard({ dish }) {
               />
               <Text className="text-xs">
                 <Text className="text-green-700">
-                  {" "}
-                  {rating ?? "4.75"}{" "}
+                  {rating ?? APP_CONSTANTS.DEFAULT_RATING}
                 </Text>
                 <Text className="text-gray-700">
-                  &#40; 4.4K reviews&#41; .
+                  {" "}({APP_CONSTANTS.DEFAULT_REVIEWS}) .{" "}
                   <Text className="font-semibold">{category}</Text>
                 </Text>
               </Text>

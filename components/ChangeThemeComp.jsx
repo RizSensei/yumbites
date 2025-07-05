@@ -2,8 +2,9 @@ import React from "react";
 import { Modal, Pressable, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { themeColors } from "@/constants/Colors";
+import { THEME_COLORS } from "@/constants/AppConstants";
 
-const ColorCircle = ({ color }) => {
+const ColorCircle = ({ color, onPress }) => {
   return (
     <Pressable
       style={{
@@ -12,6 +13,7 @@ const ColorCircle = ({ color }) => {
         borderRadius: 9999,
         backgroundColor: color,
       }}
+      onPress={onPress}
     />
   );
 };
@@ -46,16 +48,14 @@ const ChangeThemeComp = ({ themeModalVisible, setThemeModalVisible }) => {
   });
 
   const colors = [
-    {
-      color: "#15803D",
-    },
-    {
-      color: "#EF4444",
-    },
-    {
-      color: "#6366F1",
-    },
+    { color: THEME_COLORS.PRIMARY },
+    { color: THEME_COLORS.SECONDARY },
+    { color: THEME_COLORS.TERTIARY },
   ];
+
+  const handleClose = () => {
+    setThemeModalVisible(false);
+  };
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -64,9 +64,7 @@ const ChangeThemeComp = ({ themeModalVisible, setThemeModalVisible }) => {
         animationType="slide"
         transparent={true}
         visible={themeModalVisible}
-        onRequestClose={() => {
-          setThemeModalVisible(!themeModalVisible);
-        }}
+        onRequestClose={handleClose}
       >
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
@@ -75,15 +73,12 @@ const ChangeThemeComp = ({ themeModalVisible, setThemeModalVisible }) => {
             </Text>
             <View style={{ marginVertical: 20 }}>
               <View style={{ flexDirection: "row", gap: 8 }}>
-                {colors.map((color, idx) => {
-                  return <ColorCircle key={idx} color={color.color} />;
-                })}
+                {colors.map((color, idx) => (
+                  <ColorCircle key={idx} color={color.color} />
+                ))}
               </View>
             </View>
-            <Pressable
-              onPress={() => setThemeModalVisible(!themeModalVisible)}
-              style={styles.button}
-            >
+            <Pressable onPress={handleClose} style={styles.button}>
               <Text style={styles.buttonText}>Close</Text>
             </Pressable>
           </View>

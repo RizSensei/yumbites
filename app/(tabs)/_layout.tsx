@@ -3,6 +3,36 @@ import React from "react";
 import { useCart } from "../../hooks/useCart";
 import * as Icon from "react-native-feather";
 import { Text, View } from "react-native";
+import { TAB_COLORS, APP_CONSTANTS } from "../../constants/AppConstants";
+
+const CartBadge = ({ count }: { count: number }) => (
+  <View style={{ position: "relative" }}>
+    <Icon.ShoppingCart
+      height="25"
+      width="25"
+      stroke={TAB_COLORS.ACTIVE}
+    />
+    {count > 0 && (
+      <View
+        style={{
+          position: "absolute",
+          top: -APP_CONSTANTS.CART_BADGE_OFFSET,
+          right: -APP_CONSTANTS.CART_BADGE_OFFSET,
+          backgroundColor: TAB_COLORS.ACTIVE,
+          borderRadius: 10,
+          width: APP_CONSTANTS.CART_BADGE_SIZE,
+          height: APP_CONSTANTS.CART_BADGE_SIZE,
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <Text style={{ color: "white", fontSize: 10 }}>
+          {count}
+        </Text>
+      </View>
+    )}
+  </View>
+);
 
 export default function TabLayout() {
   const { cartItemsLength } = useCart();
@@ -10,8 +40,8 @@ export default function TabLayout() {
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: "green",
-        tabBarInactiveTintColor: "gray",
+        tabBarActiveTintColor: TAB_COLORS.ACTIVE,
+        tabBarInactiveTintColor: TAB_COLORS.INACTIVE,
         headerShown: false,
       }}
     >
@@ -23,7 +53,7 @@ export default function TabLayout() {
             <Icon.Home
               height="25"
               width="25"
-              stroke={focused ? "green" : "gray"}
+              stroke={focused ? TAB_COLORS.ACTIVE : TAB_COLORS.INACTIVE}
             />
           ),
         }}
@@ -36,7 +66,7 @@ export default function TabLayout() {
             <Icon.Mail
               height="25"
               width="25"
-              stroke={focused ? "green" : "gray"}
+              stroke={focused ? TAB_COLORS.ACTIVE : TAB_COLORS.INACTIVE}
             />
           ),
         }}
@@ -46,30 +76,7 @@ export default function TabLayout() {
         options={{
           title: "Cart",
           tabBarIcon: ({ focused }) => (
-            <View style={{ position: "relative" }}>
-              <Icon.ShoppingCart
-                height="25"
-                width="25"
-                stroke={focused ? "green" : "gray"}
-              />
-              <View
-                style={{
-                  position: "absolute",
-                  top: -5,
-                  right: -5,
-                  backgroundColor: "green",
-                  borderRadius: 10,
-                  width: 16,
-                  height: 16,
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
-                <Text style={{ color: "white", fontSize: 10 }}>
-                  {cartItemsLength}
-                </Text>
-              </View>
-            </View>
+            <CartBadge count={cartItemsLength} />
           ),
         }}
       />
@@ -81,7 +88,7 @@ export default function TabLayout() {
             <Icon.User
               height="25"
               width="25"
-              stroke={focused ? "green" : "gray"}
+              stroke={focused ? TAB_COLORS.ACTIVE : TAB_COLORS.INACTIVE}
             />
           ),
         }}
@@ -94,7 +101,7 @@ export default function TabLayout() {
             <Icon.Grid
               height="25"
               width="25"
-              stroke={focused ? "green" : "gray"}
+              stroke={focused ? TAB_COLORS.ACTIVE : TAB_COLORS.INACTIVE}
             />
           ),
         }}

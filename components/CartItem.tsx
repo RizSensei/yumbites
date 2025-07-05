@@ -4,9 +4,33 @@ import { useDispatch } from "react-redux";
 import { themeColors } from "@/constants/Colors";
 import { addToCart, removeDish, removeFromCart } from "@/redux/slices/cartSlice";
 import * as Icon from "react-native-feather";
+import { formatPrice } from "@/utils/helpers";
 
-const CartItem = ({item}:{item: any}) => {
+interface CartItemProps {
+  item: {
+    id: string;
+    name: string;
+    price: number;
+    quantity: number;
+    image: string;
+  };
+}
+
+const CartItem: React.FC<CartItemProps> = ({ item }) => {
   const dispatch = useDispatch();
+
+  const handleRemoveFromCart = () => {
+    dispatch(removeFromCart({ name: item.name }));
+  };
+
+  const handleAddToCart = () => {
+    dispatch(addToCart(item));
+  };
+
+  const handleRemoveDish = () => {
+    const itemIndex = 0; // This should be calculated based on the item's position
+    dispatch(removeDish(itemIndex));
+  };
 
   return (
     <View style={{
@@ -25,15 +49,15 @@ const CartItem = ({item}:{item: any}) => {
       <Text className="flex-1 font-bold text-gray-700">{item.name}</Text>
       <View className="flex-row items-center">
         <TouchableOpacity
-          onPress={() => dispatch(removeFromCart({ ...item.item }))}
+          onPress={handleRemoveFromCart}
           className="p-1 rounded-full"
           style={{ backgroundColor: themeColors.bgColor(1) }}
         >
           <Icon.Minus strokeWidth={2} height={18} width={18} stroke={"white"} />
         </TouchableOpacity>
-        <Text className="px-3">${item.price * item.quantity}</Text>
+        <Text className="px-3">${formatPrice(item.price * item.quantity)}</Text>
         <TouchableOpacity
-          onPress={() => dispatch(addToCart(item))}
+          onPress={handleAddToCart}
           className="p-1 rounded-full"
           style={{ backgroundColor: themeColors.bgColor(1) }}
         >
@@ -41,7 +65,7 @@ const CartItem = ({item}:{item: any}) => {
         </TouchableOpacity>
       </View>
       <TouchableOpacity
-        onPress={() => dispatch(removeDish(item.id))}
+        onPress={handleRemoveDish}
         className="p-1 rounded-full"
         style={{ backgroundColor: "red", marginLeft:5 }}
       >

@@ -1,6 +1,6 @@
 import { themeColors } from "@/constants/Colors";
 import { dishes } from "@/constants/mock/dishes-data";
-import { Link, useRouter } from "expo-router";
+import { Link } from "expo-router";
 import React from "react";
 import {
   Pressable,
@@ -9,10 +9,9 @@ import {
   View
 } from "react-native";
 import RestaurantCard from "./restaurantCard";
+import { APP_CONSTANTS } from "@/constants/AppConstants";
 
 export default function FeaturedRow() {
-  const router = useRouter();
-
   return (
     <View>
       <View className="flex-row justify-between items-center">
@@ -37,7 +36,7 @@ export default function FeaturedRow() {
         showsHorizontalScrollIndicator={false}
         className="overflow-visible py-5"
       >
-        {dishes?.slice(0,6).map((dish, index) => (
+        {dishes?.slice(0, APP_CONSTANTS.FEATURED_DISHES_LIMIT).map((dish, index) => (
           <RestaurantCard key={index} dish={dish} />
         ))}
       </ScrollView>
